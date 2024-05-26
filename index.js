@@ -35,11 +35,13 @@ app.options("*", cors());
 app.use(upload.array());
 app.use(express.static("public"));
 
-// routes
-app.use("/api/auth", authRoute);
-app.use("/api/document", documentRoute);
-app.use("/api/documentEdo", documentEdoRoute);
-app.use("/api/documentTemplate", documentTemplateRoute);
+app.use("/hello", (req, res) => {
+  res.send("Hello World!");
+});
+app.use("/auth", authRoute);
+app.use("/document", documentRoute);
+app.use("/documentEdo", documentEdoRoute);
+app.use("/documentTemplate", documentTemplateRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is running at port 8800!");
