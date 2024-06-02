@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const Document = require("../models/Document");
+const DocumentTemplate = require("../models/DocumentTemplate");
 const { handleSingleUploadFile } = require("../utils/uploadSingleFile");
 
 router.post("/create", async (req, res) => {
@@ -13,15 +14,32 @@ router.post("/create", async (req, res) => {
   }
 
   const { file, body } = uploadedFile;
+  const docType = body.docType || 'docTemplate';
+  let fileToUpload;
 
   try {
-    const document = new Document({
-      name: body.name,
-      file: file.filename,
-    });
+    switch (docType) {
+      case 'document':
+        fileToUpload = new Document({
+          name: file.name,
+          folder: body.folder,
+          subfolder: body.subfolder
+        });
 
-    await document.save();
-    res.status(201).json(document);
+        await fileToUpload.save();
+      case 'documentTemplate':
+        fileToUpload = new DocumentTemplate({
+          name: file.name,
+          docType: body.docType,
+        });
+
+        await fileToUpload.save();
+
+      await fileToUpload.save();
+    }
+    
+
+    res.status(201).json(fileToUpload);
   } catch (err) {
     res.status(500).json(err);
   }

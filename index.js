@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-const multer = require("multer");
+// const multer = require("multer");
 
 // Routes
 const authRoute = require("./routes/auth");
@@ -14,7 +14,7 @@ const documentTemplateRoute = require("./routes/documentTemplate");
 
 const app = express();
 dotenv.config();
-var upload = multer();
+// var upload = multer();
 
 /* MongoDB Connection */
 mongoose
@@ -32,7 +32,7 @@ app.use(cors());
 app.options("*", cors());
 
 // for parsing multi/form-data
-app.use(upload.array());
+// app.use(upload.array());
 app.use(express.static("public"));
 
 app.use("/auth", authRoute);
