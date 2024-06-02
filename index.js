@@ -35,9 +35,6 @@ app.options("*", cors());
 app.use(upload.array());
 app.use(express.static("public"));
 
-app.use("/hello", (req, res) => {
-  res.send("Hello World!");
-});
 app.use("/auth", authRoute);
 app.use("/document", documentRoute);
 app.use("/documentEdo", documentEdoRoute);
