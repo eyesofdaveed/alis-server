@@ -34,8 +34,6 @@ router.post("/create", async (req, res) => {
         });
 
         await fileToUpload.save();
-
-      await fileToUpload.save();
     }
     
 
