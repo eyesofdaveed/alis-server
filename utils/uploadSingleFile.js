@@ -1,7 +1,7 @@
 const path = require("path");
 const multer = require("multer");
 
-const uploadFilePath = path.resolve(__dirname, "../..", "public/uploads");
+const uploadFilePath = path.resolve(__dirname, "..", "public/uploads");
 
 const storageFile = multer.diskStorage({
   destination: uploadFilePath,

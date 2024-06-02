@@ -7,6 +7,23 @@ router.post("/create", async (req, res) => {
 
   try {
     const savedDocumentEdo = await newDocumentEdo.save();
+    //name: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    // },
+    // folder: {type: String },
+    // subFolder: {type: String },
+    // docType: {type: String },
+    // docTemplate: [{
+    //   folder: {type: String},
+    //   subfolder: {type: String},
+    //   docType: {type: String},
+    //   name: {type: String},
+    //   mappings: {
+    //     type: Object,
+    //   }
+    // }],
     res.status(200).json(savedDocumentEdo);
   } catch (err) {
     res.status(500).json(err);
