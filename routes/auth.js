@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 const GoogleApi = require("../api/googleApi");
+
 const dotenv = require("dotenv");
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -42,13 +43,13 @@ router.get("/google/callback", async (req, res) => {
 });
 
 // Регистрация
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, email, password, role } = req.body;
 
   // Проверка, существует ли пользователь с таким email или username
   const existingUser = await User.findOne({ $or: [{ email }, { username }] });
   if (existingUser) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({ message: "User already exists" });
   }
 
   // Хеширование пароля
@@ -58,45 +59,53 @@ router.post('/register', async (req, res) => {
   const newUser = new User({ username, email, password: hashedPassword, role });
   await newUser.save();
 
-  res.status(201).json({ message: 'User registered successfully' });
+  res.status(201).json({ message: "User registered successfully" });
 });
 
 // Вход
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   // Проверка, существует ли пользователь с таким email
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(400).json({ message: 'Invalid credentials' });
+    return res.status(400).json({ message: "Invalid credentials" });
   }
 
   // Проверка пароля
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(400).json({ message: 'Invalid credentials' });
+    return res.status(400).json({ message: "Invalid credentials" });
   }
 
   // Создание JWT
-  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, {
+    expiresIn: "1d",
+  });
 
   res.status(200).json({ token: token });
 });
 
 // Проверка JWT
-router.get('/protected', (req, res) => {
-  const token = req.headers['authorization'];
+router.get("/protected", (req, res) => {
+  const token = req.headers["authorization"];
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: "No token provided" });
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET)
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.userId = decoded.userId;
-    res.status(200).json({ message: 'Protected route accessed', userId: req.userId, role: decoded.role });
+    res
+      .status(200)
+      .json({
+        message: "Protected route accessed",
+        userId: req.userId,
+        role: decoded.role,
+      });
   } catch (error) {
     console.log(error, 100);
-    res.status(401).json({ message: 'Invalid token' });
+    res.status(401).json({ message: "Invalid token" });
   }
 });
 
