@@ -9,7 +9,7 @@ const DocumentTemplateSchema = new Schema(
       required: true,
       unique: true,
     },
-    docType: {type: String, required: true}
+    docType: {type: String }
     
     // googleDriveFolderId: {
     //   type: String,

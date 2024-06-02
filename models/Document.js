@@ -28,6 +28,7 @@ const DocumentSchema = new Schema(
     }],
     folder: { type: String},
     subFolder: { type: String},
+    docType: { type: String },
   },
   { timestamps: true }
 );
