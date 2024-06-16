@@ -9,8 +9,13 @@ const DocumentTemplateSchema = new Schema(
       required: true,
       unique: true,
     },
-    docType: {type: String }
-    
+    fileId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    docType: { type: String },
+
     // googleDriveFolderId: {
     //   type: String,
     //   required: true,

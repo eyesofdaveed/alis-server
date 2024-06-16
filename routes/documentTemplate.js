@@ -2,17 +2,6 @@ const router = require("express").Router();
 
 const DocumentTemplate = require("../models/DocumentTemplate");
 
-router.post("/create", async (req, res) => {
-  const newDocumentTemplate = new DocumentTemplate(req.body);
-
-  try {
-    const savedDocumentTemplate = await newDocumentTemplate.save();
-    res.status(200).json(savedDocumentTemplate);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
 router.get("/", async (req, res) => {
   try {
     const documentTemplates = await DocumentTemplate.find();

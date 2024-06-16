@@ -14,14 +14,15 @@ router.post("/create", async (req, res) => {
   }
 
   const { file, body } = uploadedFile;
-  const docType = body.docType || "docTemplate";
+  const docType = body.docType || "documentTemplate";
   let fileToUpload;
 
   try {
     switch (docType) {
       case "document":
         fileToUpload = new Document({
-          name: file.name,
+          name: body.name,
+          fileId: file.filename,
           folder: body.folder,
           subfolder: body.subfolder,
         });
@@ -29,8 +30,9 @@ router.post("/create", async (req, res) => {
         await fileToUpload.save();
       case "documentTemplate":
         fileToUpload = new DocumentTemplate({
-          name: file.name,
-          docType: body.docType,
+          name: body.name,
+          fileId: file.filename,
+          docType: "documentTemplate",
         });
 
         await fileToUpload.save();
