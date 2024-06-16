@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const router = require("express").Router();
 
 const DocumentTemplate = require("../models/DocumentTemplate");
@@ -17,6 +19,8 @@ router.delete("/:id", async (req, res) => {
     if (!documentTemplate) {
       res.status(404).json("Document template not found");
     }
+    const { fileId } = documentTemplate;
+    fs.unlinkSync(path.resolve(__dirname, "..", "public/uploads", fileId));
 
     await documentTemplate.delete();
     res.status(200).json("Document template deleted");
