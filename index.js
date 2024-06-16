@@ -40,6 +40,8 @@ app.use("/document", documentRoute);
 app.use("/documentEdo", documentEdoRoute);
 app.use("/documentTemplate", documentTemplateRoute);
 
-app.listen(8800, () => {
-  console.log("Backend server is running at port 8800!");
+const PORT = process.env.PORT || 8800;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Backend server is running on port ${PORT}`);
 });
