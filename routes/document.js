@@ -14,20 +14,20 @@ router.post("/create", async (req, res) => {
   }
 
   const { file, body } = uploadedFile;
-  const docType = body.docType || 'docTemplate';
+  const docType = body.docType || "docTemplate";
   let fileToUpload;
 
   try {
     switch (docType) {
-      case 'document':
+      case "document":
         fileToUpload = new Document({
           name: file.name,
           folder: body.folder,
-          subfolder: body.subfolder
+          subfolder: body.subfolder,
         });
 
         await fileToUpload.save();
-      case 'documentTemplate':
+      case "documentTemplate":
         fileToUpload = new DocumentTemplate({
           name: file.name,
           docType: body.docType,
@@ -35,7 +35,6 @@ router.post("/create", async (req, res) => {
 
         await fileToUpload.save();
     }
-    
 
     res.status(201).json(fileToUpload);
   } catch (err) {
@@ -43,9 +42,12 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/document", async (req, res) => {
   try {
-    const documents = await Document.find();
+    const documents = await Document.find({
+      folder: req.query.folder,
+      subfolder: req.query.subfolder,
+    });
     res.status(200).json(documents);
   } catch (err) {
     res.status(500).json(err);
